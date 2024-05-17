@@ -49,6 +49,7 @@ class Program
             return;
         }
 
+        Console.Title = "Jyuno Prompt";
         Console.WriteLine("Jyuno Prompt\n[Notice] Jyuno keywords do not work in prompt.");
         JyunoPrompt prompt = new();
         prompt.Run();
