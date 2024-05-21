@@ -1,5 +1,6 @@
 ﻿using Jyuno;
 using Jyuno.Language;
+using System.Collections;
 using System.Text;
 
 class Program
@@ -105,7 +106,7 @@ class JyunoPrompt
     public Interpreter Interpreter { get; init; }
     public bool Running { get; private set; } = true;
     public string CommandLineText = ">>>";
-    public string ReturnText = "\nReturn: {0}\n";
+    public string ReturnText = "\nReturn:\n{0}\n";
     public string ErrorText = "\nError: {0}\n";
     public string ExceptionText = "\nC# Exception: {0}\n";
 
@@ -124,8 +125,15 @@ class JyunoPrompt
             try
             {
                 var ret = Interpreter.ExecuteLine(input) ?? "null";
-                if (ret is IEnumerable<string> arr)
-                    ret = string.Join('\n' , ret);
+                if (ret is Array ienum)
+                {
+                    StringBuilder sb = new();
+                    foreach(var s in ienum)
+                    {
+                        sb.AppendLine(s.ToString());
+                    }
+                    ret = sb.ToString();
+                }
                 Console.WriteLine(ReturnText , ret);
             }
             catch (JyunoException ex)
